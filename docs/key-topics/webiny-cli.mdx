@@ -6,9 +6,6 @@ keywords: ["webiny", "cli", "development"]
 description: Learn what Webiny CLI is and how it can help you in your project development.
 ---
 
-import Theme from "../mdxComponents/theme";
-import { Box, Button, Grid, Link } from "theme-ui";
-
 :::tip What you'll learn
 - what is the Webiny CLI
 - what are the commonly used commands
@@ -33,7 +30,7 @@ For a full list of commands, in your terminal of choice, make sure to run `yarn 
 Watches specified project application for application and cloud infrastructure code changes, and performs rebuilds and redeploys, accordingly.
 
 :::info
-For more information, please visit the [Use Watch Command](/docs/how-to-guides/webiny-cli/use-watch-command) guide.
+For more information, please visit the [Use Watch Command](/docs/how-to-guides/use-watch-command) guide.
 :::
 
 ### `yarn webiny deploy --env {dev}`
@@ -58,6 +55,32 @@ The `--env` argument is required.
 For more hands-on information on the above listed commands, please visit the [Deploy Your Project](/docs/how-to-guides/deployment/deploy-your-project) and [Destroy Cloud Infrastructure](/docs/how-to-guides/deployment/destroy-cloud-infrastructure) guides.
 :::
 
+### `yarn webiny output {folder} --env {env}`
+
+Returns stack output for the specified project application and environment.
+
+:::info
+Stack output represents all of the values that were exported from project application's cloud infrastructure code, for the specified environment. For example, in the **API** project application, in the [`api/pulumi/dev/index.ts`](https://github.com/webiny/webiny-js/blob/v5.14.0/packages/cwp-template-aws/template/api/pulumi/dev/index.ts#L127-L136) file, we have the following:
+
+```ts title="pinterest-clone/api/pulumi/dev/index.ts"
+return {
+    region: process.env.AWS_REGION,
+    apiUrl: cloudfront.cloudfront.domainName.apply(value => `https://${value}`),
+    cognitoUserPoolId: cognito.userPool.id,
+    cognitoAppClientId: cognito.userPoolClient.id,
+    updatePbSettingsFunction: pageBuilder.functions.updateSettings.arn,
+    psQueueAdd: prerenderingService.functions.queue.add.arn,
+    psQueueProcess: prerenderingService.functions.queue.process.arn,
+    dynamoDbTable: dynamoDb.table.name,
+    dynamoDbElasticsearchTable: elasticSearch.table.name
+};
+```
+:::
+
+### `yarn webiny info --env {env}`
+
+Returns useful URLs, for example, the URL over which the deployed GraphQL API can be accessed.
+
 ### `yarn webiny pulumi {folder} --env {env} -- {command}`
 
 Provides a way to execute Pulumi specific commands directly via the Pulumi CLI.
@@ -66,19 +89,15 @@ Provides a way to execute Pulumi specific commands directly via the Pulumi CLI.
 For more information, please visit the [Execute Pulumi Commands](/docs/how-to-guides/deployment/execute-pulumi-commands) guide.
 :::
 
-### `yarn webiny info --env {env}`
-
-Returns useful URLs, for example, the URL over which the deployed GraphQL API can be accessed.
-
 ### `yarn webiny ws run {cmd} --folder {f} --scope {s}`
 
 Runs provided command, for example the `watch` command, across multiple workspaces (packages) in your project. Workspaces are defined via either the `--folder` or `--scope` argument.
 
 :::info
-For more information, please visit the [Working With Workspaces](/docs/how-to-guides/webiny-cli/working-with-workspaces) guide.
+For more information, please visit the [Working With Workspaces](/docs/how-to-guides/working-with-workspaces) guide.
 :::
 
-### `yarn webiny disable-tracking`
+### `yarn webiny disable-telemetry`
 
 Completely disables collection of anonymous usage information.
 

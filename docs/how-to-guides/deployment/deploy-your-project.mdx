@@ -65,7 +65,7 @@ yarn webiny deploy --env prod
 
 ### Deploying a Project Application
 
-To deploy a specific project application, located withing your Webiny project, simple append the path to the folder in which the project application resides, for example:
+To deploy a specific project application, located within your Webiny project, simply append the path to the folder in which the project application resides, for example:
 
 ```bash
 yarn webiny deploy api --env dev
@@ -74,6 +74,49 @@ yarn webiny deploy apps/website --env dev
 ```
 
 Note that when deploying a specific project application, the environment (`--env`) argument is not optional, it must always be set.
+
+## List AWS Resources
+To list all cloud infrastructure resources deployed as part of a particular project application, you can run the following command:
+```bash
+yarn webiny pulumi {folder} --env {env} -- stack --show-ids
+```
+
+For example, to list all cloud infrastructure resources deployed as part of the **API** project
+application, deployed into the `dev` environment, you can run the following command:
+```bash
+yarn webiny pulumi api --env dev -- stack --show-ids
+```
+
+Running the above command should produce the following output:
+
+<!-- vale off -->
+
+<img
+  src={require("./assets/deploy-your-project/list-aws-resources.png").default}
+  className="no-shadow"
+  style={{ borderRadius: 0 }}
+  alt="Previewing Stack command"
+/>
+
+<!-- vale on -->
+
+Similarly, you can use the following commands to list all cloud infrastructure resources
+deployed as part of the **Admin Area** and **Website** project applications, into the `dev` environment:
+
+```bash
+yarn webiny pulumi apps/admin --env dev -- stack --show-ids
+yarn webiny pulumi apps/website --env dev -- stack --show-ids
+```
+
+:::info
+For more information on the `webiny pulumi` command, please visit the [Execute Pulumi Commands](/docs/how-to-guides/deployment/execute-pulumi-commands) guide.
+:::
+
+:::tip
+By default, every Webiny project consists of three project applications: **API** (`api`), **Admin Area** (`apps/admin`), and **Website** (`apps/website`).
+Read more about project organization in the [Project Organization](/docs/key-topics/project-organization/project-applications-and-packages) key topics section.
+:::
+
 
 ## Debugging
 
@@ -87,13 +130,13 @@ This can significantly help in debugging underlying deployment ([Pulumi](/docs/k
 
 ## Building the Application Code
 
-It's worth mentioning that the deployment commands shown above also build your application code. They perform this task by just running the following [`workspaces run`](/docs/how-to-guides/webiny-cli/working-with-workspaces) command:
+It's worth mentioning that the deployment commands shown above also build your application code. They perform this task by just running the following [`workspaces run`](/docs/how-to-guides/working-with-workspaces) command:
 
 ```bash
 yarn webiny workspaces run build --folder {STACK_FOLDER}
 ```
 
-The command first finds all packages that are located in the project application folder. Then, for every found package, it runs the `build` command that's specified in the `webiny.config.js` - a configuration file that every package possesses. If the `build` command is defined, it gets executed, otherwise, the process just continues with the next package.
+The command first finds all packages that are located in the project application folder. Then, for every found package, it runs the `build` command that's specified in the `webiny.config.ts` - a configuration file that every package possesses. If the `build` command is defined, it gets executed, otherwise, the process just continues with the next package.
 
 ## List AWS resources used by Project
 TODO:
